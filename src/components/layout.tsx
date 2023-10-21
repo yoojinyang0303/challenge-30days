@@ -4,30 +4,27 @@ import { auth } from "../firebase";
 
 const Wrapper = styled.div`
   display: grid;
-  grid-template-columns: 1fr 4fr;
-  gap: 50px;
-  padding: 50px 0px;
-  width: 100%;
-  max-width: 860px;
+  grid-template-columns: 1fr 10fr;
+  gap: 30px;
   height: 100%;
 `;
 
 const Menu = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
+  display: inline-block;
+  padding: 80px 30px 0 30px;
 `;
 
 const MenuItem = styled.div`
-  cursor: pointer;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 50px;
   height: 50px;
+  margin-bottom: 20px;
   border: 2px solid white;
   border-radius: 50%;
+  cursor: pointer;
   svg {
     width: 30px;
     fill: white;

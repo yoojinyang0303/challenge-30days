@@ -9,7 +9,6 @@ import {
   getDownloadURL,
   uploadBytes,
 } from "firebase/storage";
-import { ChallengeSample } from "./post-tweet-form";
 import * as React from "react";
 
 const Wrapper = styled.div`
@@ -58,17 +57,10 @@ const EditButton = styled.button`
   background-color: #1d9bf0;
 `;
 
-export default function Tweet({
-  username,
-  photo,
-  content,
-  challengeTitle,
-  userId,
-  id,
-}: ITweet) {
+export default function Tweet({ username, photo, tweet, userId, id }: ITweet) {
   const user = auth.currentUser;
   const [editTweet, setEditTweet] = useState(false);
-  const [newTweet, setNewTweet] = useState(content);
+  const [newTweet, setNewTweet] = useState(tweet);
   const [file, setFile] = useState<File | null>(null);
 
   const onDelete = async () => {
@@ -108,13 +100,13 @@ export default function Tweet({
 
         // Firestore의 해당 문서 업데이트
         await updateDoc(doc(db, "tweets", id), {
-          content: newTweet,
+          tweet: newTweet,
           photo: url,
         });
       } else {
         // 이미지 파일이 첨부되지 않은 경우, 트윗 텍스트만 업데이트
         await updateDoc(doc(db, "tweets", id), {
-          content: newTweet,
+          tweet: newTweet,
         });
       }
       setEditTweet(false);
@@ -134,7 +126,6 @@ export default function Tweet({
 
   return (
     <Wrapper>
-      <h3>{challengeTitle}</h3>
       {editTweet ? (
         <>
           <form onSubmit={submitEdit}>
@@ -161,7 +152,7 @@ export default function Tweet({
       ) : (
         <Column>
           <Username>{username}</Username>
-          <Payload>{content}</Payload>
+          <Payload>{tweet}</Payload>
           {user?.uid === userId ? (
             <DeleteButton onClick={onDelete}>삭제</DeleteButton>
           ) : null}

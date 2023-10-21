@@ -14,12 +14,8 @@ const Wrapper = styled.div`
 const ChallengeTitle = styled.div`
   display: flex;
   gap: 20px;
-  justify-content: space-between;
   align-items: center;
-  h3 {
-    margin: 0;
-    color: #605f5e;
-  }
+  h3,
   h4 {
     margin: 0;
   }
@@ -86,7 +82,7 @@ const SubmitBtn = styled.input`
   }
 `;
 
-export const ChallengeSample = {
+const ChallengeSample = {
   title: "기본 챌린지",
   contents: [
     "침대 정리하기",
@@ -125,10 +121,10 @@ const day = new Date().getDate();
 
 export default function PostTweetForm() {
   const [isLoading, setLoading] = useState(false);
-  const [content, setContent] = useState("");
+  const [tweet, setTweet] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const onChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setContent(e.target.value);
+    setTweet(e.target.value);
   };
   const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { files } = e.target;
@@ -140,13 +136,13 @@ export default function PostTweetForm() {
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const user = auth.currentUser;
-    if (!user || isLoading || content === "" || content.length > 180) return;
+    if (!user || isLoading || tweet === "" || tweet.length > 180) return;
 
     try {
       setLoading(true);
       const doc = await addDoc(collection(db, "tweets"), {
         challengeTitle: ChallengeSample.contents[day % 30],
-        content,
+        tweet,
         createdAt: new Date(),
         username: user.displayName || "Anonymous",
         userId: user.uid,
@@ -157,7 +153,7 @@ export default function PostTweetForm() {
         const url = await getDownloadURL(result.ref);
         await updateDoc(doc, { photo: url });
       }
-      setContent("");
+      setTweet("");
       setFile(null);
     } catch (e) {
       console.log(e);
@@ -169,10 +165,10 @@ export default function PostTweetForm() {
   return (
     <Wrapper>
       <ChallengeTitle>
+        <h3>{ChallengeSample.title}</h3>
         <h4>
           day {day % 30} - {ChallengeSample.contents[day % 30]}
         </h4>
-        <h3>[ {ChallengeSample.title} ]</h3>
       </ChallengeTitle>
       <hr />
       <Form onSubmit={onSubmit}>
@@ -180,7 +176,7 @@ export default function PostTweetForm() {
           required
           rows={5}
           maxLength={180}
-          value={content}
+          value={tweet}
           onChange={onChange}
           placeholder="오늘의 챌린지, 어땠나요?"
         />

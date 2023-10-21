@@ -44,9 +44,12 @@ const GlobalStyles = createGlobalStyle`
     box-sizing: border-box;
   };
   body {
-    background-color: black;
-    color: white;
+    display: flex;
+    justify-content: center;
+    margin: 0;
+    color: black;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    background-color: #F3E2D7;
   }
 `;
 

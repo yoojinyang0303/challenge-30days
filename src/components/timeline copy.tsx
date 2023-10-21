@@ -29,7 +29,7 @@ const Wrapper = styled.div`
 `;
 
 export default function Timeline() {
-  const [contents, setContent] = useState<ITweet[]>([]);
+  const [tweets, setTweet] = useState<ITweet[]>([]);
 
   useEffect(() => {
     let unsubscribe: Unsubscribe | null = null;
@@ -39,20 +39,19 @@ export default function Timeline() {
         orderBy("createdAt", "desc"),
         limit(25)
       );
+      /*
+        const snapshot = await getDocs(tweetsQuery);
+        const tweets = snapshot.docs.map((doc) => {
+          const { tweet, createdAt, userId, username, photo } = doc.data();
+          return { tweet, createdAt, userId, username, photo, id: doc.id };
+        });
+        */
       // 데이터베이스 및 쿼리와 실시간 연결하는 함수
       unsubscribe = await onSnapshot(tweetsQuery, (snapshot) => {
-        const contents = snapshot.docs.map((doc) => {
-          const {
-            challengeTitle,
-            content,
-            createdAt,
-            userId,
-            username,
-            photo,
-          } = doc.data();
+        const tweets = snapshot.docs.map((doc) => {
+          const { tweet, createdAt, userId, username, photo } = doc.data();
           return {
-            challengeTitle,
-            content,
+            tweet,
             createdAt,
             userId,
             username,
@@ -60,7 +59,7 @@ export default function Timeline() {
             id: doc.id,
           };
         });
-        setContent(contents);
+        setTweet(tweets);
       });
     };
     fetchTweets();
@@ -70,10 +69,10 @@ export default function Timeline() {
   }, []);
   return (
     <Wrapper>
-      {contents.map((content) => (
+      {tweets.map((tweet) => (
         <Tweet
-          key={content.id}
-          {...content}
+          key={tweet.id}
+          {...tweet}
         />
       ))}
     </Wrapper>
