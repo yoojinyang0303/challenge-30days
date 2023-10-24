@@ -13,18 +13,36 @@ import { ChallengeSample } from "./post-tweet-form";
 import * as React from "react";
 
 const Wrapper = styled.div`
-  display: grid;
-  grid-template-columns: 3fr 1fr;
-  padding: 20px;
+  width: inherit;
+  padding: 1rem 2rem 2rem 2rem;
   border: 1px solid #605f5e;
+  h3 {
+    font-size: 1.6rem;
+  }
+`;
+
+const ChallengeTitle = styled.div`
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+  align-items: center;
+  h3 {
+    margin: 0;
+    color: #605f5e;
+    font-size: 1.3rem;
+  }
+  h4 {
+    margin: 0;
+    font-size: 1.6rem;
+  }
 `;
 
 const Column = styled.div``;
 
 const Photo = styled.img`
-  widht: 100px;
-  height: 100px;
-  border-radius: 15px;
+  widht: 20rem;
+  height: 20rem;
+  border-radius: 0.5rem;
 `;
 
 const Username = styled.span`
@@ -35,6 +53,14 @@ const Username = styled.span`
 const Payload = styled.p`
   margin: 10px 0px;
   font-size: 18px;
+`;
+
+const Contents = styled.div``;
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
 `;
 
 const DeleteButton = styled.button`
@@ -55,7 +81,7 @@ const EditButton = styled.button`
   color: white;
   font-weight: 600;
   font-size: 12px;
-  background-color: #1d9bf0;
+  background-color: #605f5e;
 `;
 
 export default function Tweet({
@@ -134,7 +160,11 @@ export default function Tweet({
 
   return (
     <Wrapper>
-      <h3>{challengeTitle}</h3>
+      <ChallengeTitle>
+        <h4>{challengeTitle}</h4>
+        <h3>[ {ChallengeSample.title} ]</h3>
+      </ChallengeTitle>
+
       {editTweet ? (
         <>
           <form onSubmit={submitEdit}>
@@ -160,18 +190,21 @@ export default function Tweet({
         </>
       ) : (
         <Column>
-          <Username>{username}</Username>
-          <Payload>{content}</Payload>
-          {user?.uid === userId ? (
-            <DeleteButton onClick={onDelete}>삭제</DeleteButton>
-          ) : null}
-          {user?.uid === userId ? (
-            <EditButton onClick={toggleEditing}>수정</EditButton>
-          ) : null}
+          <Contents>
+            <Username>{username}</Username>
+            <Payload>{content}</Payload>
+          </Contents>
         </Column>
       )}
-
       <Column>{photo ? <Photo src={photo} /> : null}</Column>
+      <ButtonWrapper>
+        {user?.uid === userId ? (
+          <DeleteButton onClick={onDelete}>삭제</DeleteButton>
+        ) : null}
+        {user?.uid === userId ? (
+          <EditButton onClick={toggleEditing}>수정</EditButton>
+        ) : null}
+      </ButtonWrapper>
     </Wrapper>
   );
 }

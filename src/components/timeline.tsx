@@ -26,6 +26,7 @@ const Wrapper = styled.div`
   flex-direction: column;
   gap: 10px;
   overflow-y: scroll;
+  width: 100%;
 `;
 
 export default function Timeline() {

@@ -43,6 +43,9 @@ const GlobalStyles = createGlobalStyle`
   *{
     box-sizing: border-box;
   };
+  html {
+    font-size: 10px;
+  }
   body {
     display: flex;
     justify-content: center;

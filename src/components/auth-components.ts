@@ -6,7 +6,7 @@ export const Wrapper = styled.div`
   align-items: center;
   height: 100%;
   width: 420px;
-  padding: 50px 0px;
+  padding: 50px 0;
 `;
 export const Title = styled.h1`
   font-size: 42px;

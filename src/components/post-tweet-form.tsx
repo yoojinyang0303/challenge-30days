@@ -6,6 +6,7 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { addDoc, collection, updateDoc } from "firebase/firestore";
 
 const Wrapper = styled.div`
+  width: inherit;
   padding: 15px;
   margin-bottom: 50px;
   border: 1px solid #605f5e;
@@ -19,9 +20,11 @@ const ChallengeTitle = styled.div`
   h3 {
     margin: 0;
     color: #605f5e;
+    font-size: 1.3rem;
   }
   h4 {
     margin: 0;
+    font-size: 1.6rem;
   }
 `;
 
@@ -37,12 +40,12 @@ const TextArea = styled.textarea`
   border: none;
   resize: none;
   color: black;
-  font-size: 16px;
+  font-size: 1.6rem;
   font-family: system-ui, -apple-system, BlickMacSystemFont, "Segoe UI", Roboto,
     Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   background-color: white;
   &::placeholder {
-    font-size: 16px;
+    font-size: 1.6rem;
   }
   &:focus {
     outline: none;
@@ -55,11 +58,8 @@ const ButtonArea = styled.div`
 `;
 
 const AttachFileButton = styled.label`
-  width: 50px;
+  width: 5rem;
   color: #605f5e;
-  text-align: center;
-  font-size: 14px;
-  font-weight: 600;
   cursor: pointer;
   background-image: url("../public/gallery.png");
   background-position: center;
@@ -72,11 +72,11 @@ const AttachFileInput = styled.input`
 `;
 
 const SubmitBtn = styled.input`
-  width: 120px;
-  padding: 10px 0px;
+  width: 12rem;
+  padding: 1rem 0px;
   border: none;
-  border-radius: 10px;
-  font-size: 16px;
+  border-radius: 1rem;
+  font-size: 1.6rem;
   cursor: pointer;
   color: white;
   background-color: #605f5e;
