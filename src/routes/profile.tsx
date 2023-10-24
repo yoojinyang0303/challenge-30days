@@ -1,8 +1,17 @@
-import { useState } from "react";
-import { auth, storage, updateProfile } from "../firebase";
+import { useState, useEffect } from "react";
+import { auth, db, storage, updateProfile } from "../firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import {
+  collection,
+  getDocs,
+  limit,
+  orderBy,
+  query,
+  where,
+} from "firebase/firestore";
+import { ITweet } from "../components/timeline";
+import Tweet from "../components/tweet";
 import { styled } from "styled-components";
-import * as React from "react";
 
 const Wrapper = styled.div`
   display: flex;
@@ -34,9 +43,17 @@ const AvatarInput = styled.input`
   display: none;
 `;
 
+const Challenges = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+`;
+
 export default function Profile() {
   const user = auth.currentUser;
   const [avatar, setAvatar] = useState(user?.photoURL);
+  const [challenges, setChallenges] = useState<ITweet[]>([]);
   const onAvatarChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const { files } = e.target;
     if (!user) return;
@@ -51,6 +68,32 @@ export default function Profile() {
       });
     }
   };
+  const fetchTweets = async () => {
+    const challegeQuery = query(
+      collection(db, "tweets"),
+      where("userId", "==", user?.uid),
+      orderBy("createdAt", "desc"),
+      limit(25)
+    );
+    const snapshot = await getDocs(challegeQuery);
+    const challenges = snapshot.docs.map((doc) => {
+      const { challengeTitle, content, createdAt, userId, username, photo } =
+        doc.data();
+      return {
+        challengeTitle,
+        content,
+        createdAt,
+        userId,
+        username,
+        photo,
+        id: doc.id,
+      };
+    });
+    setChallenges(challenges);
+  };
+  useEffect(() => {
+    fetchTweets();
+  }, []);
   return (
     <Wrapper>
       <AvatarUpload htmlFor="avatar">
@@ -74,6 +117,14 @@ export default function Profile() {
         onChange={onAvatarChange}
       />
       <Name>{user?.displayName ?? "Anonymous"} </Name>
+      <Challenges>
+        {challenges.map((challenge) => (
+          <Tweet
+            key={challenge.id}
+            {...challenge}
+          />
+        ))}
+      </Challenges>
     </Wrapper>
   );
 }
