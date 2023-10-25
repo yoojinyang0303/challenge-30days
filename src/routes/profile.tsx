@@ -67,6 +67,7 @@ const Challenges = styled.div`
 
 export default function Profile() {
   const user = auth.currentUser;
+  const [userName, setUserName] = useState(user?.username);
   const [avatar, setAvatar] = useState(user?.photoURL);
   const [challenges, setChallenges] = useState<ITweet[]>([]);
   const onAvatarChange = async (e: React.ChangeEvent<HTMLInputElement>) => {

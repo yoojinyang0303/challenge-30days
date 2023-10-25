@@ -21,83 +21,11 @@ const Wrapper = styled.div`
   }
 `;
 
-const Top = styled.div`
-  width: 100%;
-`;
-
-const Bottom = styled.div``;
-
-const EditWrapper = styled.div`
-  width: 100%;
-  form {
-    width: inherit;
-    display: inline-block;
-  }
-`;
-
-const EditContent = styled.div`
-  width: 100%;
-  input {
-    width: inherit;
-    height: 3rem;
-  }
-`;
-
-const EditSaveButton = styled.button`
-  padding: 5px 10px;
-  cursor: pointer;
-  border: 0;
-  border-radius: 5px;
-  float: right;
-  margin-right: 6rem;
-  background-color: tomato;
-  input {
-    cursor: pointer;
-    border: 0;
-    color: white;
-    font-weight: 600;
-    font-size: 12px;
-    background-color: transparent;
-  }
-`;
-
-const EditCancelWrapper = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  margin-top: -2.8rem;
-`;
-
-const EditCancelButton = styled.button`
-  padding: 5px 10px;
-  cursor: pointer;
-  border: 0;
-  border-radius: 5px;
-  background-color: #605f5e;
-  button {
-    cursor: pointer;
-    border: 0;
-    color: white;
-    font-weight: 600;
-    font-size: 12px;
-    background-color: transparent;
-  }
-`;
-
-const Username = styled.p`
-  width: inherit;
-  margin: 0;
-  margin-bottom: 0.5rem;
-  font-weight: 600;
-  font-size: 1.6rem;
-  color: #605f5e;
-`;
-
 const ChallengeTitle = styled.div`
   display: flex;
   gap: 20px;
   justify-content: space-between;
   align-items: center;
-  width: inherit;
   h3 {
     margin: 0;
     color: #605f5e;
@@ -107,9 +35,12 @@ const ChallengeTitle = styled.div`
     margin: 0;
     font-size: 1.6rem;
   }
+  border: 0.2rem solid orange;
 `;
 
-const Column = styled.div``;
+const Column = styled.div`
+  border: 0.2rem solid green;
+`;
 
 const Photo = styled.img`
   widht: 20rem;
@@ -117,17 +48,25 @@ const Photo = styled.img`
   border-radius: 0.5rem;
 `;
 
+const Username = styled.span`
+  font-weight: 600;
+  font-size: 15px;
+`;
+
 const Payload = styled.p`
   margin: 10px 0px;
   font-size: 18px;
 `;
 
-const Contents = styled.div``;
+const Contents = styled.div`
+  border: 0.2rem solid magenta;
+`;
 
 const ButtonWrapper = styled.div`
   display: flex;
   justify-content: flex-end;
   gap: 0.5rem;
+  border: 0.2rem solid skyblue;
 `;
 
 const DeleteButton = styled.button`
@@ -160,9 +99,6 @@ export default function Tweet({
   id,
 }: ITweet) {
   const user = auth.currentUser;
-  // const [avatar, setAvatar] = useState(user?.photoURL);
-  //   const avatar = ref(storage, `avatars/${user.uid}`);
-  const avatar = user?.photoURL;
   const [editTweet, setEditTweet] = useState(false);
   const [newTweet, setNewTweet] = useState(content);
   const [file, setFile] = useState<File | null>(null);
@@ -230,64 +166,51 @@ export default function Tweet({
 
   return (
     <Wrapper>
-      <Top>
-        <Username>{username}'s 챌린지</Username>
-        <ChallengeTitle>
-          <h4>{challengeTitle}</h4>
-          <h3>[ {ChallengeSample.title} ]</h3>
-        </ChallengeTitle>
-      </Top>
+      <ChallengeTitle>
+        <h4>{challengeTitle}</h4>
+        <h3>[ {ChallengeSample.title} ]</h3>
+      </ChallengeTitle>
       <hr />
-      <Bottom>
-        {editTweet ? (
-          <EditWrapper>
-            <form onSubmit={submitEdit}>
-              <EditContent>
-                <input
-                  type="text"
-                  placeholder="Edit your tweet!"
-                  value={newTweet}
-                  onChange={onChangingEdit}
-                  required
-                />
-              </EditContent>
-              <input
-                type="file"
-                id="file"
-                onChange={onFileChange}
-                accept="image/*"
-              />
-              <EditSaveButton>
-                <input
-                  id="EditSaveButton"
-                  type="submit"
-                  value="수정 내용 저장"
-                />
-              </EditSaveButton>
-            </form>
-            <EditCancelWrapper>
-              <EditCancelButton>
-                <button onClick={toggleEditing}>취소</button>
-              </EditCancelButton>
-            </EditCancelWrapper>
-          </EditWrapper>
-        ) : (
-          <Column>
-            <Contents>
-              <Payload>{content}</Payload>
-            </Contents>
-          </Column>
-        )}
-        <Column>{photo ? <Photo src={photo} /> : null}</Column>
-        <ButtonWrapper>
-          {user?.uid === userId ? (
-            <DeleteButton onClick={onDelete}>삭제</DeleteButton>
-          ) : null}
-          {user?.uid === userId ? (
-            <EditButton onClick={toggleEditing}>수정</EditButton>
-          ) : null}
-        </ButtonWrapper>
-      </Bottom>
+      {editTweet ? (
+        <>
+          <form onSubmit={submitEdit}>
+            <input
+              type="text"
+              placeholder="Edit your tweet!"
+              value={newTweet}
+              onChange={onChangingEdit}
+              required
+            />
+            <input
+              type="submit"
+              value="수정 내용 저장"
+            />
+            <input
+              type="file"
+              id="file"
+              onChange={onFileChange}
+              accept="image/*"
+            />
+          </form>
+          <button onClick={toggleEditing}>취소</button>
+        </>
+      ) : (
+        <Column>
+          <Contents>
+            <Username>{username}</Username>
+            <Payload>{content}</Payload>
+          </Contents>
+        </Column>
+      )}
+      <Column>{photo ? <Photo src={photo} /> : null}</Column>
+      <ButtonWrapper>
+        {user?.uid === userId ? (
+          <DeleteButton onClick={onDelete}>삭제</DeleteButton>
+        ) : null}
+        {user?.uid === userId ? (
+          <EditButton onClick={toggleEditing}>수정</EditButton>
+        ) : null}
+      </ButtonWrapper>
     </Wrapper>
   );
 }
