@@ -3,9 +3,6 @@ import { auth, db, storage, updateProfile } from "../firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import {
   collection,
-  doc,
-  setDoc,
-  updateDoc,
   getDocs,
   limit,
   orderBy,
@@ -53,12 +50,6 @@ const AvatarUpload = styled.label`
 const AvatarImg = styled.img`
   width: 100%;
 `;
-
-const UsernameWrapper = styled.div`
-  display: flex;
-  gap: 1.5rem;
-  width: 20rem;
-`;
 const Name = styled.span`
   font-size: 22px;
   font-weight: 600;
@@ -74,29 +65,10 @@ const Challenges = styled.div`
   width: 100%;
 `;
 
-const EditButton = styled.button`
-  padding: 0.5rem 1rem;
-  cursor: pointer;
-  border: 0;
-  border-radius: 0.5rem;
-  color: white;
-  font-weight: 600;
-  font-size: 1.2rem;
-  background-color: #605f5e;
-`;
-
-export default function Profile({
-  username,
-  photo,
-  content,
-  challengeTitle,
-  userId,
-  id,
-}: ITweet) {
+export default function Profile() {
   const user = auth.currentUser;
-  // const [userName, setUserName] = useState(username);
-  const [userName, setUserName] = useState(user?.displayName);
-  const [editUsername, setEditUsername] = useState(false);
+  const [userName, setUserName] = useState(user?.username);
+  const [editUsername, SetEditUsername] = useState(false);
   const [avatar, setAvatar] = useState(user?.photoURL);
   const [challenges, setChallenges] = useState<ITweet[]>([]);
   const onAvatarChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -139,12 +111,9 @@ export default function Profile({
   useEffect(() => {
     fetchTweets();
   }, []);
-  const toggleEditing = () => {
-    setEditUsername((prevEditing) => !prevEditing);
-  };
-
   return (
     <Wrapper>
+      {/* 페이지 제목 */}
       <PageTitle>마이 페이지</PageTitle>
       <AvatarContainer>
         <AvatarUpload htmlFor="avatar">
@@ -167,9 +136,7 @@ export default function Profile({
           accept="image/*"
           onChange={onAvatarChange}
         />
-        <UsernameWrapper>
-          <Name>{userName}</Name>
-        </UsernameWrapper>
+        <Name>{user?.displayName ?? "Anonymous"} </Name>
       </AvatarContainer>
       <Challenges>
         {challenges.map((challenge) => (

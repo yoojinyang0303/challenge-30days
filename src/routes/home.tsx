@@ -1,4 +1,5 @@
 import PostTweetForm from "../components/post-tweet-form";
+import PostCustomChallengeForm from "../components/post-custom-challenge-form";
 import Timeline from "../components/timeline";
 // import { auth } from "../firebase";
 import { styled } from "styled-components";
@@ -22,6 +23,7 @@ export default function Home() {
       {/* 페이지 제목 */}
       <PageTitle>메인</PageTitle>
       <PostTweetForm />
+      <PostCustomChallengeForm />
       <Timeline />
     </Wrapper>
   );

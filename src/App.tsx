@@ -4,6 +4,7 @@ import Layout from "./components/layout";
 import Home from "./routes/home";
 import Profile from "./routes/profile";
 import Login from "./routes/login";
+import CustomChallenge from "./routes/custom-challenge";
 import CreateAccount from "./routes/create-account";
 import { createGlobalStyle } from "styled-components";
 import LoadingScreen from "./components/loading-screen";
@@ -27,12 +28,17 @@ const router = createBrowserRouter([
         path: "profile",
         element: <Profile />,
       },
+      {
+        path: "/custom-challenge",
+        element: <CustomChallenge />,
+      },
     ],
   },
   {
     path: "/login",
     element: <Login />,
   },
+
   {
     path: "/create-account",
     element: <CreateAccount />,
